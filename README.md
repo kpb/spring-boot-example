@@ -11,6 +11,14 @@ Using the Gradle wrapper:
 Or your own version of Gradle:
 
     $ gradle clean build
+    
+### Building a Container
+
+If you have docker installed (or Podman) you can build an image:
+
+    $ ./spring-boot-example.sh
+    
+You don't need Gradle or Java; the multi-stage build will use a container with the correct version of those tools.
 
 ## Running
 
@@ -25,7 +33,13 @@ Running the jarfile:
 The default port is 8090, which you can change by setting an environment var:
 
     $ export server_port=9000
-    
+
+### Running the image
+
+If you built the image as above, you can run a containter using Docker or Podman:
+
+    $ docker run --rm -p 8090:8090 kpb/spring-boot-example:0.0.1
+  
 ## Endpoints
 
 _GET /hello_
