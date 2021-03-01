@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-example-deployment
+  labels:
+    app: spring-boot-example
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spring-boot-example
+  template:
+    metadata:
+      labels:
+        app: spring-boot-example
+    spec:
+      containers:
+      - name: spring-boot-example
+        image: kpb/spring-boot-example:0.0.1
+        ports:
+        - containerPort: 8090
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: spring-boot-example-service
+spec:
+  selector:
+    app: spring-boot-example
+  ports:
+    - port: 8090
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-boot-example-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /hello
+        pathType: Exact
+        backend:
+          service:
+            name: spring-boot-example-service
+            port:
+              number: 8090
+      - path: /echo
+        pathType: Exact
+        backend:
+          service:
+            name: spring-boot-example-service
+            port:
+              number: 8090
