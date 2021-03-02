@@ -18,7 +18,21 @@ spec:
       - name: spring-boot-example
         image: kpb/spring-boot-example:0.0.1
         ports:
-        - containerPort: 8090
+          - containerPort: 8090
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8090
+          failureThreshold: 3
+          periodSeconds: 5
+          initialDelaySeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8090
+          failureThreshold: 3
+          periodSeconds: 5
+          initialDelaySeconds: 5          
 ---
 kind: Service
 apiVersion: v1
